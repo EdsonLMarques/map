@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mapa de Imóveis</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: row;
+            margin: 0;
+            padding: 0;
+        }
+
+        #filtro {
+            width: 300px;
+            height: 100vh;
+            background-color: #f1f1f1;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #mapa {
+            flex: 1;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="filtro">
+        <!-- Adicione os filtros aqui -->
+        <h2>Filtros</h2>
+        <label for="tipo">Tipo:</label>
+        <select id="tipo">
+            <option value="casa">Casa</option>
+            <option value="apartamento">Apartamento</option>
+            <option value="terreno">Terreno</option>
+            <option value="comercial">Comercial</option>
+        </select>
+        <br><br>
+        <label for="preco">Preço:</label>
+        <input type="range" id="preco" name="preco" min="0" max="1000000" step="10000">
+    </div>
+    <div id="mapa">
+        {{ mapa_html | safe }}
+    </div>
+    <script>
+        function filtrar() {
+            // Obter os valores dos filtros
+            var tipo = document.getElementById('tipo').value;
+            var preco = document.getElementById('preco').value;
+
+            // Remover todos os polígonos e marcadores do mapa
+            mapa_html.eachLayer(function (layer) {
+                mapa_html.removeLayer(layer);
+            });
+
+            // Adicionar apenas os polígonos e marcadores que correspondem aos filtros selecionados
+            poligonos.forEach(function (poligono) {
+                if (poligono.options.popup.includes(tipo) && parseInt(poligono.options.popup.match(/\d+/)[0]) <= parseInt(preco)) {
+                    poligono.addTo(mapa);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

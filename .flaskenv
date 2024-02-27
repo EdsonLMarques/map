@@ -1,0 +1,2 @@
+FLASK_APP=maps.py
+FLASK_ENV=development
